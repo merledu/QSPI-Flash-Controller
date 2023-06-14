@@ -1,0 +1,1 @@
+[View and Edit Diagram](https://app.diagrams.net/?tags=%7B%7D&page-id=2yysWdFa9B5gHO1IlBTH&title=Flash%20Memory%20Controller.drawio.svg#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1DVEHGbo-FAT7UELjMZqh8NJ8RX_vnAXv%26export%3Ddownload)
