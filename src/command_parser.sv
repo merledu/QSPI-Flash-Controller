@@ -5,7 +5,7 @@
  // outputs are: command_o
  // depending on the flash type, and the command, we decide the command code
 
-`include "../include/commands.vh"
+`include "../include/commands.svh"
 
  //  Module: command_parser
  //
