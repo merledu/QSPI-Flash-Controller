@@ -12,7 +12,7 @@
  module command_parser
     /*  package imports  */
     #(
-        <parameter_list>
+        // <parameter_list>
     )(
         input wire [1:0] flash_type_i,
         input wire [4:0] command_i,
