@@ -15,3 +15,10 @@
 `define CMD_WRDI 8'h04
 `define CMD_RDSR 8'h05
 `define CMD_WRSR 8'h01
+
+// winbond w25q
+`define CMD_SE_w25q 8'h20
+`define CMD_BE_32k_w25q 8'h52
+`define CMD_BE_64k_w25q 8'hD8
+`define CMD_CE_w25q 8'hC7 // 0x60
+
