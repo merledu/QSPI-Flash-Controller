@@ -5,6 +5,8 @@
  // outputs are: command_o
  // depending on the flash type, and the command, we decide the command code
 
+`include "../include/commands.vh"
+
  //  Module: command_parser
  //
  module command_parser
@@ -13,7 +15,7 @@
         <parameter_list>
     )(
         input wire [1:0] flash_type_i,
-        input wire [3:0] command_i,
+        input wire [4:0] command_i,
         input wire clk,
         input wire reset,
         input wire enable,
