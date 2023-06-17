@@ -34,75 +34,189 @@
         // check for reset, command is invalid, and enable
         if (!reset) begin
             command_o <= 0;
-        end else if (command_valid && command_enable) begin
+        end else if (enable) begin
             command_o <= command_wire;
         end else begin
             command_o <= 0;
         end
 
     end
-    
-    // according to the command, and the flash type, generate the command wire
-    case (flash_type_i)
-        Winbond: 
-        // commands for winbond
-        Read: command_wire = Winbond_Read;
-        Fast_Read: command_wire = Winbond_Fast_Read;
-        Dual_Output_Read: command_wire = Winbond_Dual_Output_Read;
-        Quad_Output_Read: command_wire = Winbond_Quad_Output_Read;
-        Dual_IO_Read: command_wire = Winbond_Dual_IO_Read;
-        Quad_IO_Read: command_wire = Winbond_Quad_IO_Read;
-        Word_Read: command_wire = Winbond_Word_Read;
-        Fast_Read_Dual_Output: command_wire = Winbond_Fast_Read_Dual_Output;
-        Fast_Read_Quad_Output: command_wire = Winbond_Fast_Read_Quad_Output;
-        Word_Read_Dual_IO: command_wire = Winbond_Word_Read_Dual_IO;
-        Word_Read_Quad_IO: command_wire = Winbond_Word_Read_Quad_IO;
-        Page_Program: command_wire = Winbond_Page_Program;
-        Quad_Page_Program: command_wire = Winbond_Quad_Page_Program;
-        Sector_Erase: command_wire = Winbond_Sector_Erase;
-        Block_Erase: command_wire = Winbond_Block_Erase;
-        Chip_Erase: command_wire = Winbond_Chip_Erase;
-        Read_Status_Register: command_wire = Winbond_Read_Status_Register;
-        Read_Status_Register_2: command_wire = Winbond_Read_Status_Register_2;
-        Write_Status_Register: command_wire = Winbond_Write_Status_Register;
-        Write_Status_Register_2: command_wire = Winbond_Write_Status_Register_2;
-        Read_ID: command_wire = Winbond_Read_ID;
-        Read_JEDEC_ID: command_wire = Winbond_Read_JEDEC_ID;
-        Read_Unique_ID: command_wire = Winbond_Read_Unique_ID;
-        Read_SFDP_Register: command_wire = Winbond_Read_SFDP_Register;
-        Erase_Security_Register: command_wire = Winbond_Erase_Security_Register;
-        Program_Security_Register: command_wire = Winbond_Program_Security_Register;
-        Read_Security_Register: command_wire = Winbond_Read_Security_Register;
-        Enable_Reset: command_wire = Winbond_Enable_Reset;
-        Reset_Device: command_wire = Winbond_Reset_Device;
-        Read_Extended_Address_Register: command_wire = Winbond_Read_Extended_Address_Register;
-        Write_Extended_Address_Register: command_wire = Winbond_Write_Extended_Address_Register;
-        Enter_4_Byte_Address_Mode: command_wire = Winbond_Enter_4_Byte_Address_Mode;
-        Exit_4_Byte_Address_Mode: command_wire = Winbond_Exit_4_Byte_Address_Mode;
-        Read_Configuration_Register: command_wire = Winbond_Read_Configuration_Register;
-        Read_Configuration_Register_2: command_wire = Winbond_Read_Configuration_Register_2;
-        Write_Configuration_Register: command_wire = Winbond_Write_Configuration_Register;
-        Write_Configuration_Register_2: command_wire = Winbond_Write_Configuration_Register_2;
-        Read_Enhanced_Volatile_Configuration_Register: command_wire = Winbond_Read_Enhanced_Volatile_Configuration_Register;
-        Write_Enhanced_Volatile_Configuration_Register: command_wire = Winbond_Write_Enhanced_Volatile_Configuration_Register;
-        Erase_Program_Suspend: command_wire = Winbond_Erase_Program_Suspend;
-        Erase_Program_Resume: command_wire = Winbond_Erase_Program_Resume;
-        Power_Down: command_wire = Winbond_Power_Down;
-        High_Performance_Mode: command_wire = Winbond_High_Performance_Mode;
-        Mode_Bit_Reset: command_wire = Winbond_Mode_Bit_Reset;
-        Deep_Power_Down: command_wire = Winbond_Deep_Power_Down;
-        Release_From_Deep_Power_Down: command_wire = Winbond_Release_From_Deep_Power_Down;
-
-        // commands for infineon
-        infineon: 
-        Read: command_wire = Infineon_Read;
-        Fast_Read: command_wire = Infineon_Fast_Read;
-        Dual_Output_Read: command_wire = Infineon_Dual_Output_Read;
-        Quad_Output_Read: command_wire = Infineon_Quad_Output_Read;
-        Dual_IO_Read: command_wire = Infineon_Dual_IO_Read;
-        Quad_IO_Read: command_wire = Infineon_Quad_IO_Read;
-        Word_Read: command_wire = Infineon_Word_Read;
-        default: 
-    endcase
+    // according to the command, if it is a command that differs between flash types
+    // we need to check the flash type and generate the appropriate command
+    // if it is a command that is the same for all flash types, we just generate the command
+    // and assign it to the output
+    // this means that the case will depend on the command first, and then the flash type
+    always_comb begin
+        case (command_i)
+            // read commands
+            `CMD_READ_INPUT:
+                    begin
+                        command_wire = `CMD_READ;
+                    end
+            `CMD_FAST_READ_INPUT:
+                    begin
+                        command_wire = `CMD_FAST_READ;
+                    end
+            `CMD_DUAL_READ_INPUT:
+                    begin
+                        command_wire = `CMD_DUAL_READ;
+                    end
+            `CMD_DUAL_IO_READ_INPUT:
+                    begin
+                        command_wire = `CMD_DUAL_IO_READ;
+                    end
+            `CMD_QUAD_READ_INPUT:
+                    begin
+                        command_wire = `CMD_QUAD_READ;
+                    end
+            `CMD_QUAD_IO_READ_INPUT:
+                    begin
+                        command_wire = `CMD_QUAD_IO_READ;
+                    end
+            `CMD_PP_INPUT:
+                    begin
+                        command_wire = `CMD_PP;
+                    end
+            `CMD_SE_INPUT:
+                    begin
+                        case (flash_type_i)
+                            Winbond:
+                                begin
+                                    command_wire = `CMD_SE_w25q;
+                                end
+                            default:
+                                begin
+                                    command_wire = `CMD_SE;
+                                end
+                        endcase
+                    end
+            `CMD_BE_INPUT:
+                    begin
+                        case (flash_type_i)
+                            Winbond:
+                                begin
+                                    command_wire = `CMD_BE_32k_w25q;
+                                end
+                            default:
+                                begin
+                                    command_wire = `CMD_BE;
+                                end
+                        endcase
+                    end
+            `CMD_RST_EN_INPUT:
+                    begin
+                        command_wire = `CMD_RST_EN;
+                    end
+            `CMD_RST_INPUT:
+                    begin
+                        command_wire = `CMD_RST;
+                    end
+            `CMD_JEDEC_INPUT:
+                    begin
+                        command_wire = `CMD_JEDEC;
+                    end
+            `CMD_WREN_INPUT:
+                    begin
+                        command_wire = `CMD_WREN;
+                    end
+            `CMD_WRDI_INPUT:
+                    begin
+                        command_wire = `CMD_WRDI;
+                    end
+            `CMD_RDSR_INPUT:
+                    begin
+                        command_wire = `CMD_RDSR;
+                    end
+            `CMD_WRSR_INPUT:
+                    begin
+                        command_wire = `CMD_WRSR;
+                    end
+            // `CMD_BE_32k_INPUT:
+            //         begin
+            //         end
+            `CMD_BE_64k_INPUT:
+                    begin
+                        case (flash_type_i)
+                            Winbond:
+                                begin
+                                    command_wire = `CMD_BE_64k_w25q;
+                                end
+                            default:
+                                begin
+                                    // command_wire = `CMD_BE_64k;
+                                end
+                        endcase
+                    end
+            `CMD_CE_INPUT:
+                    begin
+                        case (flash_type_i)
+                            Winbond:
+                                begin
+                                    command_wire = `CMD_CE_w25q;
+                                end
+                            default:
+                                begin
+                                    // command_wire = `CMD_CE;
+                                end
+                        endcase
+                    end
+            `CMD_QPP_INPUT:
+                    begin
+                        case (flash_type_i)
+                            infineon:
+                                begin
+                                    command_wire = `CMD_QPP_s25fl;
+                                end
+                            default:
+                                begin
+                                    // command_wire = `CMD_QPP;
+                                end
+                        endcase
+                    end
+            `CMD_REMS_INPUT:
+                    begin
+                        case (flash_type_i)
+                            infineon:
+                                begin
+                                    command_wire = `CMD_REMS_s25fl;
+                                end
+                            default:
+                                begin
+                                    // command_wire = `CMD_REMS;
+                                end
+                        endcase
+                    end
+            `CMD_RDCR_INPUT:
+                    begin
+                        case (flash_type_i)
+                            infineon:
+                                begin
+                                    command_wire = `CMD_RDCR_s25fl;
+                                end
+                            default:
+                                begin
+                                    // command_wire = `CMD_RDCR;
+                                end
+                        endcase
+                    end
+            `CMD_WRCR_INPUT:
+                    begin
+                        case (flash_type_i)
+                            infineon:
+                                begin
+                                    command_wire = `CMD_WRCR_s25fl;
+                                end
+                            default:
+                                begin
+                                    // command_wire = `CMD_WRCR;
+                                end
+                        endcase
+                    end
+            default:
+                begin
+                    command_wire = 0;
+                end
+        endcase
+    end
  endmodule: command_parser
  
