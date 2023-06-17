@@ -22,3 +22,9 @@
 `define CMD_BE_64k_w25q 8'hD8
 `define CMD_CE_w25q 8'hC7 // 0x60
 
+// infineon s25fl
+`define CMD_QPP_s25fl 8'h32
+`define CMD_REMS_s25fl 8'h90
+`define CMD_RDCR_s25fl 8'h35
+`define CMD_WRCR_s25fl 8'h01
+
