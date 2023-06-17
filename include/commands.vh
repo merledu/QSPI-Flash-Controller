@@ -28,3 +28,10 @@
 `define CMD_RDCR_s25fl 8'h35
 `define CMD_WRCR_s25fl 8'h01
 
+// gd25q
+
+
+`define tPPmax 'd5 // ms
+`define tBEmax 'd250_000 // ms
+`define tSEmax 'd3_000 // ms
+`define input_freq 'd31_250 // kHz
