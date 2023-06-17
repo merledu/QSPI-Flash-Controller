@@ -1,3 +1,4 @@
+// output commands
 // micron n25q
 `define CMD_READ 8'h03
 `define CMD_FAST_READ 8'h0B
@@ -28,9 +29,33 @@
 `define CMD_RDCR_s25fl 8'h35
 `define CMD_WRCR_s25fl 8'h01
 
-// gd25q
+// input commands
+`define CMD_READ_INPUT 5'h00
+`define CMD_FAST_READ_INPUT 5'h01
+`define CMD_DUAL_READ_INPUT 5'h02
+`define CMD_DUAL_IO_READ_INPUT 5'h03
+`define CMD_QUAD_READ_INPUT 5'h04
+`define CMD_QUAD_IO_READ_INPUT 5'h05
+`define CMD_PP_INPUT 5'h06
+`define CMD_SE_INPUT 5'h07
+`define CMD_BE_INPUT 5'h08
+`define CMD_RST_EN_INPUT 5'h09
+`define CMD_RST_INPUT 5'h0A
+`define CMD_JEDEC_INPUT 5'h0B
+`define CMD_WREN_INPUT 5'h0C
+`define CMD_WRDI_INPUT 5'h0D
+`define CMD_RDSR_INPUT 5'h0E
+`define CMD_WRSR_INPUT 5'h0F
+`define CMD_BE_32k_INPUT 5'h10
+`define CMD_BE_64k_INPUT 5'h11
+`define CMD_CE_INPUT 5'h12
+`define CMD_QPP_INPUT 5'h13
+`define CMD_REMS_INPUT 5'h14
+`define CMD_RDCR_INPUT 5'h15
+`define CMD_WRCR_INPUT 5'h16
 
 
+// timing
 `define tPPmax 'd5 // ms
 `define tBEmax 'd250_000 // ms
 `define tSEmax 'd3_000 // ms
