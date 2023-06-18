@@ -13,6 +13,7 @@
 `define STATE_RDSR 10
 `define STATE_MIORDID 11
 
+
 module qspi_flash_controller_top(
     input logic                 clk_i,
     input logic                 rst_ni,
@@ -38,15 +39,36 @@ module qspi_flash_controller_top(
     logic [31:0] wdata;
 
     // registers in the controller
-    logic [31:0] configuration_register; // contains the command ==> higher 7 bits, 
-    //                                      xip, ecc, and other configuration bits like the clock divider, and the number of dummy cycles.
-    
-    logic [31:0] status_register;
-    logic [7:0]  command_register;
-    logic [31:0] address_register;
-    logic [31:0] number_of_words_register;
-    logic [31:0] prescaler_register;
+    logic [31:0] control_register; 
+                                        //  number of words to be read or written ==> bits 31:24
+                                        //  number of dummy cycles ==> bits 23:16
+                                        //  clock divider ==> bits 15:8
+                                        //  ecc enable bit ==> bit 7
+                                        //  xip enable bit ==> bit 6
+                                        //  quad enable bit ==> bit 5
+                                        //  clock polarity ==> bit 4
+                                        //  clock phase ==> bit 3
+                                        //  chip select polarity ==> bit 2
+                                        //  chip select ==> bit 1
+                                        //  trigger bit ==> bit 0
 
+    logic [31:0] status_register;       
+                                        // status register of the controller
+                                        //// bit 31 ==> busy bit
+                                        //// bit 30 ==> error bit
+                                        //// bit 29 ==> valid bit
+                                        //// bit 28 ==> read enable bit
+                                        //// bit 27 ==> write enable bit
+                                        //// bit 26 ==> read data valid bit
+                                        //// bit 25 ==> write data valid bit
+                                        //// bit 24 ==> read data error bit
+                                        //// bit 23 ==> write data error bit
+
+    logic [31:0] addr_cmd_register;     
+                                        // higher 7 bits are the command,
+                                        // lower 24 bits are the address
+    logic [(256*8)-1:0] data_register;  
+                                        // data to be written or the data that is read
 
 
   
