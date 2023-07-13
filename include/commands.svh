@@ -36,7 +36,7 @@
 `define CMD_DUAL_IO_READ_INPUT 5'h03
 `define CMD_QUAD_READ_INPUT 5'h04
 `define CMD_QUAD_IO_READ_INPUT 5'h05
-`define CMD_PP_INPUT 5'h06
+`define CMD_WRITE_INPUT 5'h06
 `define CMD_SE_INPUT 5'h07
 `define CMD_BE_INPUT 5'h08
 `define CMD_RST_EN_INPUT 5'h09

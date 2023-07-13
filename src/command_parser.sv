@@ -17,7 +17,7 @@
         input wire [1:0] flash_type_i,
         input wire [4:0] command_i,
         input wire clk,
-        input wire reset,
+        input wire rst_ni,
         input wire enable,
         output reg [7:0] command_o
     );
@@ -26,13 +26,14 @@
     wire [7:0] command_wire;
     
     // flash type parameters
-    parameter Micron = 2'b00;
-    parameter Winbond = 2'b01;
-    parameter infineon = 2'b10;
+    localparam Winbond = 2'b00;
+    localparam infineon = 2'b01;
+    localparam micron = 2'b10;
+    localparam spansion = 2'b11;
 
-    always_ff @(posedge clk or negedge reset) begin
-        // check for reset, command is invalid, and enable
-        if (!reset) begin
+    always_ff @(posedge clk or negedge rst_ni) begin
+        // check for rst_ni, and enable
+        if (!rst_ni) begin
             command_o <= 0;
         end else if (enable) begin
             command_o <= command_wire;
@@ -45,7 +46,6 @@
     // we need to check the flash type and generate the appropriate command
     // if it is a command that is the same for all flash types, we just generate the command
     // and assign it to the output
-    // this means that the case will depend on the command first, and then the flash type
     always_comb begin
         case (command_i)
             // read commands
@@ -73,7 +73,7 @@
                     begin
                         command_wire = `CMD_QUAD_IO_READ;
                     end
-            `CMD_PP_INPUT:
+            `CMD_WRITE_INPUT:
                     begin
                         command_wire = `CMD_PP;
                     end
