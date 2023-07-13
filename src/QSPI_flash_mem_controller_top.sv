@@ -1,30 +1,13 @@
 `include "../include/commands.svh"
 `timescale 1ns / 1ps
 
-`define STATE_IDLE   0
-`define STATE_RDID   1
-`define STATE_WAIT 2
-`define STATE_WREN 3
-`define STATE_BE 4  
-`define STATE_POLL_RFSR 5
-`define STATE_PP 6
-`define STATE_SE 7
-`define STATE_WRVECR 8
-`define STATE_RDVECR 9
-`define STATE_RDSR 10
-`define STATE_MIORDID 11
-
-
 module qspi_flash_controller_top(
     input logic                 clk_i,
     input logic                 rst_ni,
   
     input  tlul_pkg::tlul_h2d_t tl_i,
     output tlul_pkg::tlul_d2h_t tl_o,
-  
-    input  logic [31:0]         wdata_i,
-    input  logic                we_i,
-  
+    
     input  logic [3:0]          qspi_flash_controller_i,
     output logic [3:0]          qspi_flash_controller_o,
     output logic [3:0]          qspi_flash_controller_oe,
@@ -37,6 +20,7 @@ module qspi_flash_controller_top(
     logic [31:0] rdata;
     logic        rvalid;
     logic        we;
+    logic        re;
     logic [31:0] wdata;
 
     // registers in the controller
