@@ -203,6 +203,23 @@ module qspi_flash_controller_top(
         .  ( )
       );
     
+      xspi_top 
+      xspi_top_dut (
+        .clk_i (clk_i ),
+        .rst_n_i (rst_n_i ),
+        .start_i (start_i ),
+        .clk_div_i (clk_div_i ),
+        .data_direction_i (data_direction_i ),
+        .data_mode_i (data_mode_i ),
+        .xspi_mode_i (xspi_mode_i ),
+        .data_i_i (data_i_i ),
+        .data_i_o (data_i_o ),
+        .data_o_i (data_o_i ),
+        .cs_o (cs_o ),
+        .sclk_o (sclk_o ),
+        .data_o_o (data_o_o ),
+        .oe_o  ( oe_o)
+      );
     
     always @(posedge clk_i or negedge rst_ni) begin
       // check for reset, then check for enable bit
