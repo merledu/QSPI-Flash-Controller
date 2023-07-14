@@ -187,6 +187,22 @@ module qspi_flash_controller_top(
         .enable (parser_enable ),
         .command_o  (  ),
       );
+
+      sequence_generator 
+      sequence_generator_dut (
+        .clk_i (clk_i ),
+        .rst_n_i (rst_n_i ),
+        .start_i (start_i ),
+        .data_in_i (data_in_i ),
+        .cmd_i (cmd_i ),
+        .addr_i (addr_i ),
+        .cmd_type_i (cmd_type_i ),
+        .done_o (done_o ),
+        .data_out_o (data_out_o ),
+        .number_of_bits_o (number_of_bits_o ),
+        .  ( )
+      );
+    
     
     always @(posedge clk_i or negedge rst_ni) begin
       // check for reset, then check for enable bit
