@@ -22,6 +22,7 @@ module sequence_generator
         input  logic [7:0]  cmd_i,
         input  logic [31:0] addr_i,
         input  logic [3:0]  cmd_type_i,
+        input  logic [1:0]  xspi,
         output logic        done_o,
         output logic [31:0] data_out_o,
         output logic [4:0]  number_of_bits_o,
